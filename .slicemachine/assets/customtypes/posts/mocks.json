@@ -1,0 +1,40 @@
+{
+  "id": "mock-doc-id",
+  "url": null,
+  "type": "posts",
+  "href": null,
+  "tags": [],
+  "first_publication_date": "1970-01-01T00:00:01+0000",
+  "last_publication_date": "1970-01-01T00:00:01+0000",
+  "slugs": [],
+  "linked_documents": [],
+  "lang": "en-us",
+  "alternate_languages": [],
+  "data": {
+    "title": "given",
+    "subtitle": "favorite",
+    "author": "pen",
+    "banner": {
+      "dimensions": {
+        "width": 900,
+        "height": 500
+      },
+      "alt": null,
+      "copyright": null,
+      "url": "https://images.unsplash.com/photo-1589321578146-4c1ba445cc88"
+    },
+    "content": [
+      {
+        "heading": "actually",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Veniam aute dolor commodo aliquip ut. Laboris aute occaecat consectetur nulla.",
+            "spans": []
+          }
+        ]
+      }
+    ],
+    "slices": []
+  }
+}
