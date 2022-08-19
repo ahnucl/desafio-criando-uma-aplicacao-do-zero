@@ -1,5 +1,21 @@
-// TODO
-// Estilos dos "info", "author", etc
-.info {
-
+.container {
+  max-width: 43.75rem;
+  margin: 0 auto;
 }
+
+// Estilos dos "info", "author", "time", lembrando que "time" tem font-size diferente (16px)
+.chipContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    // line-height: 1.0625rem;
+  }
+}
+

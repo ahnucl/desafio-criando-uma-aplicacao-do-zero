@@ -1,1 +1,45 @@
-// TODO
+.topImage {
+  margin: 4.0625rem 0;
+}
+
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.result {
+  strong {
+    color: var(--heading);
+    font-size: 1.75rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    line-height: 2.125rem;
+    letter-spacing: -0.5px;
+    font-weight: 700;
+  }
+
+  p {
+    line-height: 1.375rem;
+  }
+
+  &:hover strong {
+    text-decoration: underline;
+  }
+}
+
+.loadMoreButton {
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+
+  background: transparent;
+  border: 0;
+  color: var(--highlight);
+  font-weight: 600;
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

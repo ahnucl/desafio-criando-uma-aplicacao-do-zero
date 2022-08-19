@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
-
+import Link from 'next/link';
+import { FiClock, FiUser, FiCalendar } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -24,16 +25,48 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ props }: HomeProps) {
-  // TODO
-  return <h1>Hello</h1>;
+export default function Home({
+  postsPagination: { next_page, results },
+}: HomeProps) {
+  return (
+    <div className={commonStyles.container}>
+      <img className={styles.topImage} src="/Logo.svg" alt="logo" />
+      <div className={styles.resultContainer}>
+        {results.map(result => (
+          <Link href={`/post/${result.uid}`} key={result.uid}>
+            <a className={styles.result}>
+              <strong>{result.data.title}</strong>
+              <p>{result.data.subtitle}</p>
+              <div className={commonStyles.chipContainer}>
+                <span className={commonStyles.chip}>
+                  <FiCalendar size={20} />
+                  {result.first_publication_date}
+                </span>
+
+                <span className={commonStyles.chip}>
+                  <FiUser size={20} />
+                  {result.data.author}
+                </span>
+              </div>
+            </a>
+          </Link>
+        ))}
+      </div>
+
+      {next_page && (
+        <button className={styles.loadMoreButton} type="button">
+          Carregar mais posts
+        </button>
+      )}
+    </div>
+  );
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const prismic = getPrismicClient({});
 
   const postsResponse = await prismic.getByType('posts', {
-    pageSize: 1,
+    pageSize: 2,
   });
 
   const results = postsResponse.results.map(result => {
