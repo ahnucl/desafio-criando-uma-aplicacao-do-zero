@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FiClock, FiUser, FiCalendar } from 'react-icons/fi';
+import { FiUser, FiCalendar } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
