@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { useState } from 'react';
 import { FiClock, FiUser, FiCalendar } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 
@@ -25,9 +26,19 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({
-  postsPagination: { next_page, results },
-}: HomeProps) {
+export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const [results, setResults] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+
+  async function handleLoadMorePosts(): Promise<void> {
+    fetch(nextPage)
+      .then(response => response.json())
+      .then(data => {
+        setResults([...results, ...data.results]);
+        setNextPage(data.next_page);
+      });
+  }
+
   return (
     <div className={commonStyles.container}>
       <img className={styles.topImage} src="/Logo.svg" alt="logo" />
@@ -53,8 +64,12 @@ export default function Home({
         ))}
       </div>
 
-      {next_page && (
-        <button className={styles.loadMoreButton} type="button">
+      {nextPage && (
+        <button
+          className={styles.loadMoreButton}
+          type="button"
+          onClick={handleLoadMorePosts}
+        >
           Carregar mais posts
         </button>
       )}
@@ -66,7 +81,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const prismic = getPrismicClient({});
 
   const postsResponse = await prismic.getByType('posts', {
-    pageSize: 2,
+    pageSize: 1,
   });
 
   const results = postsResponse.results.map(result => {
