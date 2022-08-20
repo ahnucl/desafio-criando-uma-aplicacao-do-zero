@@ -2,6 +2,8 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FiUser, FiCalendar } from 'react-icons/fi';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -30,6 +32,12 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   const [results, setResults] = useState(postsPagination.results);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
+  function formatedDate(date: string): string {
+    return format(new Date(date), 'd MMM yyyy', {
+      locale: ptBR,
+    });
+  }
+
   async function handleLoadMorePosts(): Promise<void> {
     fetch(nextPage)
       .then(response => response.json())
@@ -51,7 +59,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
               <div className={commonStyles.chipContainer}>
                 <span className={commonStyles.chip}>
                   <FiCalendar size={20} />
-                  {result.first_publication_date}
+                  {formatedDate(result.first_publication_date)}
                 </span>
 
                 <span className={commonStyles.chip}>
