@@ -5,7 +5,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { getPrismicClient } from '../../services/prismic';
-import { Header } from '../../components/Header';
+import Header from '../../components/Header';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
@@ -35,7 +35,7 @@ export default function Post({ post }: PostProps): JSX.Element {
 
   const estimatedReadingTime = useMemo(() => {
     if (!post) {
-      return 0;
+      return '0 min';
     }
 
     const averageReadingTime = 200; // palavras/minuto
@@ -53,7 +53,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       return contentAcc + amountWordsHeader + amountWordsBody;
     }, 0);
 
-    return Math.ceil(totalWords / averageReadingTime);
+    return `${Math.ceil(totalWords / averageReadingTime)} min`;
   }, [post]);
 
   function formatedDate(date: string): string {
@@ -113,29 +113,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await prismic.getByType('posts');
 
   return {
-    paths: [`/post/${posts.results[0].uid}`],
+    paths: posts.results.map(post => {
+      return {
+        params: {
+          slug: post.uid,
+        },
+      };
+    }),
     fallback: true,
   };
 };
 
-export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient({});
   const { slug } = params;
   const response = await prismic.getByUID('posts', slug as string);
 
   return {
     props: {
-      post: {
-        first_publication_date: response.first_publication_date,
-        data: {
-          title: response.data.title as string,
-          author: response.data.author as string,
-          content: response.data.content,
-          banner: {
-            url: response.data.banner.url as string,
-          },
-        },
-      },
+      post: response,
     },
   };
 };
